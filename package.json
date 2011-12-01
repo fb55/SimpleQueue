@@ -1,0 +1,14 @@
+{
+    "name": "SimpleQueue",
+    "version": "0.0.1",
+    "description": "a simple fifo queue",
+    "author": "Felix Boehm <me@feedic.com>",
+    "main": "./SimpleQueue.js",
+    "repository": {
+		  "type": "git"
+		, "url": "git://github.com/fb55/simplequeue.git"
+	},
+    "scripts": {
+    	"test": "node ./tests/00-basic.js"
+    }
+}
