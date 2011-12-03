@@ -23,23 +23,25 @@ Methods to include:
 
 ##Example
 
-    var queue = new SimpleQueue(function(element, callback){
-    	setTimeout(function(){
-            callback(null, element/1e3); 
-        }, element);
-    }, function(err, result, element){
-    	console.log(result);
-    }, function(){
-    	console.log("done");
-    }, 4);
+```javascript
+var queue = new SimpleQueue(function(element, callback){
+    setTimeout(function(){
+        callback(null, element/1e3); 
+    }, element);
+}, function(err, result, element){
+    console.log(result);
+}, function(){
+    console.log("done");
+}, 4);
     
-    queue.push(1e3);
-    queue.push(5e3);
-    queue.push(3e3);
-    queue.push(4e3);
-    queue.push(8e3);
-    queue.push(2e3);
-    queue.push(0);
+queue.push(1e3);
+queue.push(5e3);
+queue.push(3e3);
+queue.push(4e3);
+queue.push(8e3);
+queue.push(2e3);
+queue.push(0);
+```
 
 Output: 
 
