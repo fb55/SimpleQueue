@@ -1,4 +1,6 @@
+var self;
 var SimpleQueue = function(worker, callback, done, concurrent){
+	self = this;
 	this._concurrent = concurrent || 20;
 	this._worker = worker;
 	this._callback = callback;
@@ -23,13 +25,13 @@ SimpleQueue.prototype.abort = function(){
 };
 
 SimpleQueue.prototype.pause = function(){
-	this._paused = true;
+	self._paused = true;
 };
 
 SimpleQueue.prototype.resume = function(){
-	this._paused = false;
-	this._scan();
-	this._checkStack();
+	self._paused = false;
+	self._scan();
+	self._checkStack();
 }
 
 SimpleQueue.prototype._checkStack = function(){
