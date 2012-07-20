@@ -1,4 +1,6 @@
+
 var SimpleQueue = function(worker, callback, done, concurrent){
+	var self = this;
 	this._concurrent = concurrent || 20;
 	this._worker = worker;
 	this._callback = callback;
@@ -9,6 +11,14 @@ var SimpleQueue = function(worker, callback, done, concurrent){
 	this._lastStarted = 0;
 	this._finished = 0;
 	this._paused = false;
+	this.pause = function(){
+		self._paused = true;
+	}
+	this.resume = function(){
+		self._paused = false;
+		self._scan();
+		self._checkStack();
+	}
 };
 
 SimpleQueue.prototype.push = function(props){
@@ -21,16 +31,6 @@ SimpleQueue.prototype.abort = function(){
 	this._queue.splice(0);
 	this._paused = true; //cb won't be called any more
 };
-
-SimpleQueue.prototype.pause = function(){
-	this._paused = true;
-};
-
-SimpleQueue.prototype.resume = function(){
-	this._paused = false;
-	this._scan();
-	this._checkStack();
-}
 
 SimpleQueue.prototype._checkStack = function(){
 	while(this._stack[this._finished]){
