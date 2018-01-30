@@ -35,7 +35,7 @@ SimpleQueue.prototype.resume = function(){
 SimpleQueue.prototype._checkStack = function(){
 	while(this._stack[this._finished]){
 	    this._callback.apply(this, this._stack[this._finished]);
-	    this._stack[this._finished] = null;
+	    delete this._stack[this._finished];
 	    this._finished += 1;
 	}
 	if(this._working === 0 && this._queue.length === 0 && this._done){
