@@ -26,8 +26,10 @@ function run(module){
 			throw Error("undexpected output, got: " + JSON.stringify(results));
 	
 		var took = Date.now() - start;
-		if(took < module.takes) throw Error("didn't take enough time");
+		var stackSize = Object.keys(queue._stack).length;
+		if (took < module.takes) throw Error("didn't take enough time");
 		if(took > (module.takes + 500)) throw Error("wasted time");
+		if(stackSize !== 0) throw Error("stack size must be 0 at the end");
 		
 		console.log("finished", module.name, "after (ms):", took);
 	}, module.concurrent);
