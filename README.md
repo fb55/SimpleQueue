@@ -3,17 +3,22 @@ A simple FIFO queue
 
 ## What is this?
 
-There are plenty queues for node, but even those branded as FIFO (first in first out) usually destroy the order. When parsing data like RSS feeds & fetching the pages behind the links, you need to know what element had what position - so I created this little helper (mainly to process feeds with my script [readabilitySAX](https://github.com/fb55/readabilitysax)).
+There are plenty queues for node, but even those branded as FIFO (first in first out) usually destroy the order.
+Eg. when parsing data like RSS feeds & fetching the pages behind the links, you need to know what element had what position - so I created this little helper (mainly to process feeds with my script [readabilitySAX](https://github.com/fb55/readabilitysax)).
 
-##How to use
+## Usage
 
 Constructor:
 
-    new SimpleQueue(<func> worker, <func> callback[, <func> done[, <num> concurrent]])
+```js
+new SimpleQueue(<func> worker, <func> callback[, <func> done[, <num> concurrent]])
+```
 
 Methods:
 
-    queue.push(<any> element) //adds an element to the list
+```js
+queue.push(<any> element) //adds an element to the list
+```
 
 Methods to include:
 
@@ -23,7 +28,7 @@ Methods to include:
 
 ## Example
 
-```javascript
+```js
 var queue = new SimpleQueue(function(element, callback){
     setTimeout(function(){
         callback(null, element/1e3);
