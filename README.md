@@ -1,7 +1,7 @@
 # SimpleQueue
 
 [![NPM version](http://img.shields.io/npm/v/SimpleQueue.svg?style=flat)](https://npmjs.org/package/SimpleQueue)
-[![Build Status](https://travis-ci.org/fb55/SimpleQueue.svg?branch=master)](https://travis-ci.org/fb55/SimpleQueue)
+[![Build Status](https://travis-ci.com/fb55/SimpleQueue.svg?branch=master)](https://travis-ci.com/fb55/SimpleQueue)
 [![Coverage](http://img.shields.io/coveralls/fb55/SimpleQueue.svg?style=flat)](https://coveralls.io/r/fb55/SimpleQueue)
 
 A simple FIFO queue
