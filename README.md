@@ -1,50 +1,138 @@
 # SimpleQueue
+
 A simple FIFO queue
+
+    npm install SimpleQueue
 
 ## What is this?
 
 There are plenty queues for node, but even those branded as FIFO (first in first out) usually destroy the order.
-Eg. when parsing data like RSS feeds & fetching the pages behind the links, you need to know what element had what position - so I created this little helper (mainly to process feeds with my script [readabilitySAX](https://github.com/fb55/readabilitysax)).
+Eg. when mapping over an RSS feeds & doing something with all of the pages,
+you need to know what element had what position - so I created this little helper.
 
-## Usage
+## API
 
-Constructor:
+### Class: SimpleQueue\<T, R>
 
-```js
-new SimpleQueue(<func> worker, <func> callback[, <func> done[, <num> concurrent]])
-```
+A simple FIFO queue, delivering items in order.
 
-Methods:
+#### Type parameters
 
-```js
-queue.push(<any> element) //adds an element to the list
-```
+| Name | Default | Description                              |
+| ---- | ------- | ---------------------------------------- |
+| `T`  | -       | Type that is pushed onto the stack.      |
+| `R`  | void    | Type that the passed `callback` maps to. |
 
-Methods to include:
+### Constructors
 
-* `worker`: The method to call for each child. Args: `element`, `callback(err, result)`
-* `callback`: The method to call when an element was processed. Args: `err` and `result` (whatever the worker returned), `element` (the input)
-* `done`: The method to call once the stack is cleared. Args: none
+#### constructor
+
+\+ **new SimpleQueue**(`worker`: (element: T, callback: (error: Error \| null, result: R) => void) => void, `callback`: (error: Error \| null, result: R, element: T) => void, `done?`: undefined \| () => void, `concurrent?`: number): `SimpleQueue`
+
+_Defined in [index.ts:16](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L16)_
+
+Creates a new FIFO queue.
+
+##### Parameters:
+
+| Name         | Type                                                                      | Default value | Description                                                |
+| ------------ | ------------------------------------------------------------------------- | ------------- | ---------------------------------------------------------- |
+| `worker`     | (element: T, callback: (error: Error \| null, result: R) => void) => void | -             | Method to call for each child. Args:                       |
+| `callback`   | (error: Error \| null, result: R, element: T) => void                     | -             | Method to call when an element was processed.              |
+| `done?`      | undefined \| () => void                                                   | -             | Method to call once the stack is cleared.                  |
+| `concurrent` | number                                                                    | 20            | Number of elements to process in parallel. Defaults to 20. |
+
+**Returns:** `SimpleQueue`
+
+### Properties
+
+#### paused
+
+• **paused**: boolean = false
+
+_Defined in [index.ts:16](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L16)_
+
+### Methods
+
+#### abort
+
+▸ **abort**(): void
+
+_Defined in [index.ts:48](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L48)_
+
+Clears the queue (can't stop running processes).
+
+**Returns:** void
+
+---
+
+#### pause
+
+▸ **pause**(): void
+
+_Defined in [index.ts:57](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L57)_
+
+Pause the queue execution.
+Will not stop already in-flight items.
+
+**Returns:** void
+
+---
+
+#### push
+
+▸ **push**(`props`: T): void
+
+_Defined in [index.ts:41](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L41)_
+
+Adds an element to the queue.
+
+##### Parameters:
+
+| Name    | Type |
+| ------- | ---- |
+| `props` | T    |
+
+**Returns:** void
+
+---
+
+#### resume
+
+▸ **resume**(): void
+
+_Defined in [index.ts:64](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L64)_
+
+Resume the queue execution,
+and catch up with remaining items.
+
+**Returns:** void
 
 ## Example
 
 ```js
-var queue = new SimpleQueue(function(element, callback){
-    setTimeout(function(){
-        callback(null, element/1e3);
-    }, element);
-}, function(err, result, element){
-    console.log(result);
-}, function(){
-    console.log("done");
-}, 4);
+import SimpleQueue from "SimpleQueue";
 
-queue.push(1e3);
-queue.push(5e3);
-queue.push(3e3);
-queue.push(4e3);
-queue.push(8e3);
-queue.push(2e3);
+const queue = new SimpleQueue(
+    (element, callback) => {
+        // Set
+        setTimeout(() => callback(null, element / 1000), element);
+    },
+    (err, result, element) => {
+        console.log(result);
+    },
+    () => {
+        console.log("done");
+    },
+    4
+);
+
+queue.push(1000);
+queue.push(5000);
+queue.push(3000);
+queue.push(4000);
+queue.push(8000);
+queue.push(2000);
 queue.push(0);
 ```
 
