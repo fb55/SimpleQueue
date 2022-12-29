@@ -1,0 +1,68 @@
+name: Node.js CI
+
+on:
+    push:
+        branches-ignore:
+            - "dependabot/**"
+    pull_request:
+
+env:
+    CI: true
+    FORCE_COLOR: 2
+    NODE_COV: lts/* # The Node.js version to run coveralls on
+
+permissions:
+    contents: read
+
+jobs:
+    lint:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
+            - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516
+              with:
+                  node-version: lts/*
+                  cache: npm
+            - run: npm ci
+            - run: npm run lint
+
+    test:
+        permissions:
+            checks: write # for coverallsapp/github-action to create new checks
+            contents: read # for actions/checkout to fetch code
+        name: Node ${{ matrix.node }}
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                node:
+                    - 12
+                    - 14
+                    - 16
+                    - lts/*
+
+        steps:
+            - uses: actions/checkout@755da8c3cf115ac066823e79a1e1788f8940201b
+            - name: Use Node.js ${{ matrix.node }}
+              uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516
+              with:
+                  node-version: ${{ matrix.node }}
+                  cache: npm
+            - run: npm ci
+            - run: npm run build --if-present
+
+            - name: Run Jest
+              run: npm run test:jest
+              if: matrix.node != env.NODE_COV
+
+            - name: Run Jest with coverage
+              run: npm run test:jest -- --coverage
+              if: matrix.node == env.NODE_COV
+
+            - name: Run Coveralls
+              uses: coverallsapp/github-action@9ba913c152ae4be1327bfb9085dc806cedb44057
+              if: matrix.node == env.NODE_COV
+              continue-on-error: true
+              with:
+                  github-token: "${{ secrets.GITHUB_TOKEN }}"
