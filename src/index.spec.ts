@@ -12,7 +12,7 @@ const expectedResults = [
 
 const delays = [1000, 5000, 3000, 4000, 8000, 2000, 0];
 
-jest.useFakeTimers("modern");
+jest.useFakeTimers();
 
 describe("SimpleQueue", () => {
     function run(

@@ -6,10 +6,12 @@
  * `R`: Type that the passed `callback` maps to.
  */
 export default class SimpleQueue<T, R = void> {
-    private queue: T[] = [];
+    private readonly queue: T[] = [];
     /** Stores elements that are finished. */
     private stack: {
-        [index: number]: [error: Error | null, result: R, element: T];
+        [index: number]:
+            | [error: Error | null, result: R, element: T]
+            | undefined;
     } = {};
     private working = 0;
     private lastStarted = 0;
@@ -69,9 +71,8 @@ export default class SimpleQueue<T, R = void> {
     }
 
     private checkStack() {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while (this.stack[this.finished]) {
-            this.callback(...this.stack[this.finished]);
+            this.callback(...this.stack[this.finished]!);
             delete this.stack[this.finished];
             this.finished += 1;
         }
