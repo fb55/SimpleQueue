@@ -128,7 +128,7 @@ const queue = new SimpleQueue(
     () => {
         console.log("done");
     },
-    4
+    4,
 );
 
 queue.push(1000);

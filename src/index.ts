@@ -29,15 +29,15 @@ export default class SimpleQueue<T, R = void> {
     constructor(
         private readonly worker: (
             element: T,
-            callback: (error: Error | null, result: R) => void
+            callback: (error: Error | null, result: R) => void,
         ) => void,
         private readonly callback: (
             error: Error | null,
             result: R,
-            element: T
+            element: T,
         ) => void,
         private readonly done?: () => void,
-        private readonly concurrent = 20
+        private readonly concurrent = 20,
     ) {}
 
     /** Adds an element to the queue. */

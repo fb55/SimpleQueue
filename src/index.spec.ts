@@ -17,7 +17,7 @@ jest.useFakeTimers();
 describe("SimpleQueue", () => {
     function run(
         { concurrent, takes }: { concurrent: number; takes: number },
-        done: () => void
+        done: () => void,
     ) {
         const start = Date.now();
         const results: {
@@ -45,7 +45,7 @@ describe("SimpleQueue", () => {
 
                 done();
             },
-            concurrent
+            concurrent,
         );
 
         delays.forEach((delay) => queue.push(delay));
@@ -60,7 +60,7 @@ describe("SimpleQueue", () => {
                 // Should take the sum of all of the delays
                 takes: delays.reduce((a, b) => a + b),
             },
-            done
+            done,
         );
     });
     it("should run all together", (done) => {
@@ -70,7 +70,7 @@ describe("SimpleQueue", () => {
                 // Should take the maximum time of all the delays
                 takes: Math.max(...delays),
             },
-            done
+            done,
         );
     });
     it("should run some together", (done) => {
@@ -79,7 +79,7 @@ describe("SimpleQueue", () => {
                 concurrent: 4,
                 takes: 9000,
             },
-            done
+            done,
         );
     });
 });
