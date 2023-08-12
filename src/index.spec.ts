@@ -37,7 +37,12 @@ describe("SimpleQueue", () => {
             },
             () => {
                 expect(results).toStrictEqual(expectedResults);
-                expect(Object.keys((queue as any).stack)).toHaveLength(0);
+                expect(
+                    Object.keys(
+                        // @ts-expect-error This is a private property
+                        queue.stack,
+                    ),
+                ).toHaveLength(0);
                 const took = Date.now() - start;
                 expect(took).toBeGreaterThanOrEqual(takes);
                 // Also should not have wasted time
