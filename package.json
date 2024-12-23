@@ -21,9 +21,10 @@
     "scripts": {
         "test": "npm run test:jest && npm run lint",
         "test:jest": "jest",
-        "lint": "npm run lint:es && npm run lint:prettier",
+        "lint": "npm run lint:es && npm run lint:prettier && npm run lint:ts",
         "lint:es": "eslint .",
         "lint:prettier": "npm run prettier -- --check",
+        "lint:ts": "tsc --noEmit",
         "format": "npm run format:es && npm run format:prettier",
         "format:es": "npm run lint:es -- --fix",
         "format:prettier": "npm run prettier -- --write",
