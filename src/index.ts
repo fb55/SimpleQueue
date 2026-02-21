@@ -41,8 +41,8 @@ export default class SimpleQueue<T, R = void> {
     ) {}
 
     /** Adds an element to the queue. */
-    public push(props: T): void {
-        this.queue.push(props);
+    public push(properties: T): void {
+        this.queue.push(properties);
         this.scan();
     }
     /**
@@ -95,14 +95,14 @@ export default class SimpleQueue<T, R = void> {
 
         this.working++;
 
-        this.worker(element, (err, result) => {
+        this.worker(element, (error, result) => {
             this.working--;
             if (!this.paused && index === this.finished) {
-                this.callback(err, result, element);
+                this.callback(error, result, element);
                 this.finished += 1;
                 this.checkStack();
             } else {
-                this.stack[index] = [err, result, element];
+                this.stack[index] = [error, result, element];
             }
 
             this.scan();
