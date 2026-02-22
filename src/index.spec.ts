@@ -32,8 +32,8 @@ describe("SimpleQueue", () => {
                     callback(null, element / 1000);
                 }, element);
             },
-            (err, result, element) => {
-                results.push({ err, result, element });
+            (error, result, element) => {
+                results.push({ err: error, result, element });
             },
             () => {
                 expect(results).toStrictEqual(expectedResults);
@@ -53,7 +53,9 @@ describe("SimpleQueue", () => {
             concurrent,
         );
 
-        delays.forEach((delay) => queue.push(delay));
+        for (const delay of delays) {
+            queue.push(delay);
+        }
 
         jest.advanceTimersToNextTimer(Infinity);
     }
