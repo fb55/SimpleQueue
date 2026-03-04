@@ -85,7 +85,7 @@ Will not stop already in-flight items.
 
 #### push
 
-▸ **push**(`props`: T): void
+▸ **push**(`properties`: T): void
 
 _Defined in [index.ts:41](https://github.com/fb55/SimpleQueue/blob/master/src/index.ts#L41)_
 
@@ -95,7 +95,7 @@ Adds an element to the queue.
 
 | Name    | Type |
 | ------- | ---- |
-| `props` | T    |
+| `properties` | T    |
 
 **Returns:** void
 

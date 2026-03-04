@@ -16,11 +16,10 @@ export default class SimpleQueue<T, R = void> {
     private working = 0;
     private lastStarted = 0;
     private finished = 0;
-    public paused = false;
+    paused = false;
 
     /**
      * Creates a new FIFO queue.
-     *
      * @param worker Method to call for each child. Args:
      * @param callback Method to call when an element was processed.
      * @param done Method to call once the stack is cleared.
@@ -40,15 +39,18 @@ export default class SimpleQueue<T, R = void> {
         private readonly concurrent = 20,
     ) {}
 
-    /** Adds an element to the queue. */
-    public push(props: T): void {
-        this.queue.push(props);
+    /**
+     * Adds an element to the queue.
+     * @param properties Element to enqueue for processing.
+     */
+    push(properties: T): void {
+        this.queue.push(properties);
         this.scan();
     }
     /**
      * Clears the queue (can't stop running processes).
      */
-    public abort(): void {
+    abort(): void {
         this.queue.length = 0;
         this.paused = true; // `cb` won't be called any more
     }
@@ -57,24 +59,26 @@ export default class SimpleQueue<T, R = void> {
      * Pause the queue execution.
      * Will not stop already in-flight items.
      */
-    public pause(): void {
+    pause(): void {
         this.paused = true;
     }
     /**
      * Resume the queue execution,
      * and catch up with remaining items.
      */
-    public resume(): void {
+    resume(): void {
         this.paused = false;
         this.scan();
         this.checkStack();
     }
 
     private checkStack() {
-        while (this.stack[this.finished]) {
-            this.callback(...this.stack[this.finished]!);
+        let entry = this.stack[this.finished];
+        while (entry) {
+            this.callback(...entry);
             delete this.stack[this.finished];
             this.finished += 1;
+            entry = this.stack[this.finished];
         }
         if (this.working === 0 && this.queue.length === 0 && this.done) {
             this.done();
@@ -95,14 +99,14 @@ export default class SimpleQueue<T, R = void> {
 
         this.working++;
 
-        this.worker(element, (err, result) => {
+        this.worker(element, (error, result) => {
             this.working--;
             if (!this.paused && index === this.finished) {
-                this.callback(err, result, element);
+                this.callback(error, result, element);
                 this.finished += 1;
                 this.checkStack();
             } else {
-                this.stack[index] = [err, result, element];
+                this.stack[index] = [error, result, element];
             }
 
             this.scan();
