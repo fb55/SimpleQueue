@@ -4,12 +4,17 @@ import { commonTypeScriptRules } from '@feedic/eslint-config/typescript';
 import tseslint from 'typescript-eslint';
 import { defineConfig } from 'eslint/config';
 import { fileURLToPath } from 'node:url';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintConfigBiome from 'eslint-config-biome';
 
 const gitignorePath = fileURLToPath(new URL('.gitignore', import.meta.url));
 
 export default defineConfig([
   includeIgnoreFile(gitignorePath),
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'error',
+    },
+  },
   {
     ignores: ['eslint.config.{js,cjs,mjs}'],
   },
@@ -34,15 +39,8 @@ export default defineConfig([
     },
     rules: {
       ...commonTypeScriptRules,
-      "@typescript-eslint/no-non-null-assertion": 0,
-      "@typescript-eslint/no-unused-vars": [
-          2,
-          {
-              "argsIgnorePattern": "^_"
-          }
-      ],
       "@typescript-eslint/strict-boolean-expressions": 2
     },
   },
-  eslintConfigPrettier
+  eslintConfigBiome
 ]);

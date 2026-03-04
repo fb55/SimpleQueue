@@ -57,7 +57,7 @@ describe("SimpleQueue", () => {
             queue.push(delay);
         }
 
-        jest.advanceTimersToNextTimer(Infinity);
+        jest.advanceTimersToNextTimer(Number.POSITIVE_INFINITY);
     }
 
     it("should run one by one", (done) => {
@@ -73,7 +73,7 @@ describe("SimpleQueue", () => {
     it("should run all together", (done) => {
         run(
             {
-                concurrent: Infinity,
+                concurrent: Number.POSITIVE_INFINITY,
                 // Should take the maximum time of all the delays
                 takes: Math.max(...delays),
             },
