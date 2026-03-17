@@ -1,4 +1,5 @@
-import SimpleQueue from ".";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import SimpleQueue from "./index.js";
 
 const expectedResults = [
     { err: null, result: 1, element: 1000 },
@@ -12,7 +13,13 @@ const expectedResults = [
 
 const delays = [1000, 5000, 3000, 4000, 8000, 2000, 0];
 
-jest.useFakeTimers();
+beforeEach(() => {
+    vi.useFakeTimers();
+});
+
+afterEach(() => {
+    vi.useRealTimers();
+});
 
 describe("SimpleQueue", () => {
     function run(
@@ -57,36 +64,39 @@ describe("SimpleQueue", () => {
             queue.push(delay);
         }
 
-        jest.advanceTimersToNextTimer(Number.POSITIVE_INFINITY);
+        vi.runAllTimers();
     }
 
-    it("should run one by one", (done) => {
-        run(
-            {
-                concurrent: 1,
-                // Should take the sum of all of the delays
-                takes: delays.reduce((a, b) => a + b),
-            },
-            done,
-        );
-    });
-    it("should run all together", (done) => {
-        run(
-            {
-                concurrent: Number.POSITIVE_INFINITY,
-                // Should take the maximum time of all the delays
-                takes: Math.max(...delays),
-            },
-            done,
-        );
-    });
-    it("should run some together", (done) => {
-        run(
-            {
-                concurrent: 4,
-                takes: 9000,
-            },
-            done,
-        );
-    });
+    it("should run one by one", () =>
+        new Promise<void>((resolve) => {
+            run(
+                {
+                    concurrent: 1,
+                    // Should take the sum of all of the delays
+                    takes: delays.reduce((a, b) => a + b),
+                },
+                resolve,
+            );
+        }));
+    it("should run all together", () =>
+        new Promise<void>((resolve) => {
+            run(
+                {
+                    concurrent: Number.POSITIVE_INFINITY,
+                    // Should take the maximum time of all the delays
+                    takes: Math.max(...delays),
+                },
+                resolve,
+            );
+        }));
+    it("should run some together", () =>
+        new Promise<void>((resolve) => {
+            run(
+                {
+                    concurrent: 4,
+                    takes: 9000,
+                },
+                resolve,
+            );
+        }));
 });
