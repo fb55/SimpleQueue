@@ -2,7 +2,7 @@
     "type": "module",
     "name": "SimpleQueue",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "a simple fifo queue",
     "author": "Felix Boehm <me@feedic.com>",
     "funding": "https://github.com/sponsors/fb55",
