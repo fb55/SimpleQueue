@@ -16,7 +16,9 @@
         }
     },
     "files": [
-        "dist/**/*"
+        "dist",
+        "src",
+        "!**/*.spec.ts"
     ],
     "repository": {
         "type": "git",
