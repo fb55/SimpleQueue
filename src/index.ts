@@ -39,39 +39,6 @@ export default class SimpleQueue<T, R = void> {
         private readonly concurrent = 20,
     ) {}
 
-    /**
-     * Adds an element to the queue.
-     * @param properties Element to enqueue for processing.
-     */
-    push(properties: T): void {
-        this.queue.push(properties);
-        this.scan();
-    }
-    /**
-     * Clears the queue (can't stop running processes).
-     */
-    abort(): void {
-        this.queue.length = 0;
-        this.paused = true; // `cb` won't be called any more
-    }
-
-    /**
-     * Pause the queue execution.
-     * Will not stop already in-flight items.
-     */
-    pause(): void {
-        this.paused = true;
-    }
-    /**
-     * Resume the queue execution,
-     * and catch up with remaining items.
-     */
-    resume(): void {
-        this.paused = false;
-        this.scan();
-        this.checkStack();
-    }
-
     private checkStack() {
         let entry = this.stack[this.finished];
         while (entry) {
@@ -111,5 +78,38 @@ export default class SimpleQueue<T, R = void> {
 
             this.scan();
         });
+    }
+
+    /**
+     * Adds an element to the queue.
+     * @param properties Element to enqueue for processing.
+     */
+    push(properties: T): void {
+        this.queue.push(properties);
+        this.scan();
+    }
+    /**
+     * Clears the queue (can't stop running processes).
+     */
+    abort(): void {
+        this.queue.length = 0;
+        this.paused = true; // `cb` won't be called any more
+    }
+
+    /**
+     * Pause the queue execution.
+     * Will not stop already in-flight items.
+     */
+    pause(): void {
+        this.paused = true;
+    }
+    /**
+     * Resume the queue execution,
+     * and catch up with remaining items.
+     */
+    resume(): void {
+        this.paused = false;
+        this.scan();
+        this.checkStack();
     }
 }
