@@ -82,6 +82,7 @@ describe("SimpleQueue", () => {
         new Promise<void>((resolve) => {
             run(
                 {
+                    // eslint-disable-next-line unicorn/prefer-global-number-constants -- biome's useNumberNamespace requires `Number.POSITIVE_INFINITY`; the two linters conflict, so keep the namespaced form.
                     concurrent: Number.POSITIVE_INFINITY,
                     // Should take the maximum time of all the delays
                     takes: Math.max(...delays),
