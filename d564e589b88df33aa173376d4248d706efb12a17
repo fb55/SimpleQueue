@@ -1,0 +1,21 @@
+.github/dependabot.yml
+  s_cdf7d3feeacb5b::t_b302c21b93773a 13-16
+.github/workflows/dependabot-automerge.yml
+  s_cdf7d3feeacb5b::t_7af88e86d47a0a 21-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d564e589b88df33aa173376d4248d706efb12a17",
+  "prompts": {},
+  "sessions": {
+    "s_cdf7d3feeacb5b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a12099-9640-7912-a885-2718c69285cc",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Felix Boehm <188768+fb55@users.noreply.github.com>"
+    }
+  }
+}
