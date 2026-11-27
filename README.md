@@ -93,8 +93,8 @@ Adds an element to the queue.
 
 ##### Parameters:
 
-| Name    | Type |
-| ------- | ---- |
+| Name         | Type |
+| ------------ | ---- |
 | `properties` | T    |
 
 **Returns:** void
